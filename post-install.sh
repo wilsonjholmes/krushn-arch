@@ -1,4 +1,5 @@
 #! /bin/bash
+set -e # Stop script on error
 
 # This is configuration script of my Arch Linux installation package.
 # Origiinally forked from krushndayshmookh.github.io/krushn-arch.
