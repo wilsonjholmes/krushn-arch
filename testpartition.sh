@@ -1,4 +1,5 @@
 #! /bin/bash
+set -e # Stop script on error
 
 # Filesystem mount warning
 echo "This script will create and format the partitions as follows:"
