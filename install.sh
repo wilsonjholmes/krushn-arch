@@ -6,13 +6,16 @@ TGTDEV=/dev/sda
 # Forked from krushndayshmookh.github.io/krushn-arch.
 
 echo "Wilson's Auto-Arch Installation Script!"
-
+echo
 echo "Set up network connection, This script will fail otherwise."
+echo "Press any key to continue or Ctrl+C to cancel..."
+read tmpvar
+echo
 
 # Filesystem mount warning
 echo "This script will create and format the partitions as follows:"
-echo "/dev/sda1 - 512Mb will be mounted as /boot/efi"
-echo "/dev/sda2 - rest of space will be mounted as /"
+echo "${TGTDEV}1 - 512Mb will be mounted as /boot/efi"
+echo "${TGTDEV}2 - rest of space will be mounted as /"
 read -p 'Continue? [y/N]: ' fsok
 if ! [ $fsok = 'y' ] && ! [ $fsok = 'Y' ]
 then 
@@ -49,18 +52,34 @@ EOF
 mkfs.ext4 /dev/sda2
 mkfs.fat -F32 /dev/sda1
 
+echo
+echo "Now the time will be synced"
+echo
+
 # Set up time
 timedatectl set-ntp true
+
+echo
+echo "Initiate pacman keyrings"
+echo
 
 # Initate pacman keyring
 pacman-key --init
 pacman-key --populate archlinux
 pacman-key --refresh-keys
 
+echo
+echo "Mount the partitions"
+echo
+
 # Mount the partitions
 mount /dev/sda2 /mnt
 mkdir -pv /mnt/boot/efi
 mount /dev/sda1 /mnt/boot/efi
+
+echo
+echo "Installing reflector for sorting mirrors. Will keep a backup of the old one."
+echo
 
 # Install reflector for sorting mirrors
 pacman -Sy reflector
@@ -73,15 +92,32 @@ reflector -l 200 -f 10 --sort score > /etc/pacman.d/mirrorlist
 
 # Install Arch Linux
 echo "Starting install.."
-echo "Installing Arch Linux, OpenBox with Gnome Terminal and Thunar and GRUB2 as bootloader" 
+echo "About to install Arch Linux, OpenBox with Gnome Terminal, Thunar, and GRUB2 as bootloader using pacstrap."
+echo "Press any key to continue or Ctrl+C to cancel... (Note: If you cancel while packages are downloading you should be able to restart this scrip without issue, but if pacstrap is cancelled during installation, bad things might happen and you may need to reformat and start over from the beginning of this scrpit)"
+read tmpvar
+echo
 pacstrap /mnt base base-devel sudo git nano neovim exa zsh grml-zsh-config grub os-prober intel-ucode efibootmgr dosfstools network-manager-applet freetype2 fuse2 networkmanager mtools iw wpa_supplicant dialog pulseaudio xorg xorg-xrandr xorg-server xorg-xinit mesa xf86-video-intel openbox gnome-terminal firefox thunar neofetch sl figlet cowsay nitrogen tint2 lightdm lxappearance
+
+echo
+echo "Generating the fstab file, this determines what drives are mounted at boot"
+echo
 
 # Generate fstab
 genfstab -U /mnt >> /mnt/etc/fstab
 
-# Copy post-install system cinfiguration script to new /root
+echo
+echo "Copying the post-install system configuration script to new /root in preperation for arch-chroot"
+echo
+
+# Copy post-install system configuration script to new /root
 cp -rfv post-install.sh /mnt/root
 chmod a+x /mnt/root/post-install.sh
+
+echo
+echo "You are now ready to change your root directory from your installation media to the drive that you are installing to!"
+echo "Press any key to continue or Ctrl+C to cancel..."
+read tmpvar
+echo
 
 # Chroot into new system
 echo "After chrooting into newly installed OS, please run the post-install.sh by executing ./post-install.sh"
@@ -90,4 +126,5 @@ read tmpvar
 arch-chroot /mnt /bin/zsh
 
 # Finish
+echo
 echo "This installation script is now finished! You now need to run post-install.sh, if that script is run successfully you will now have a fully working bootable Arch Linux system installed."
