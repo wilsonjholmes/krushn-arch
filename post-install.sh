@@ -33,7 +33,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=arch
 
 # Create new user (Group iput did not exist)
-useradd -m -G wheel,power,storage,uucp,network -s /usr/bin/zsh wilson
+useradd -m -G wheel,power,storage,uucp,network -s /bin/zsh wilson
 sed --in-place 's/^#\s*\(%wheel\s\+ALL=(ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sudoers
 echo "Set password for new user wilson"
 passwd wilson
@@ -44,9 +44,21 @@ systemctl enable lightdm
 # Enable services
 systemctl enable NetworkManager
 
+# Install yay for AUR packages
+su wilson
+cd /tmp
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si
+
+
 echo "Configuration done! Press any key to exit chroot."
 read tmpvar
 exit
+exit
+
+# unmount partitions tp prep for reboot
+umount -R /mnt
 
 # Finish
 echo "This post-install script is now finished! Arch Linux is installed!"
