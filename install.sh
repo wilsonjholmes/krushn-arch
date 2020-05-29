@@ -1,9 +1,36 @@
 #! /bin/bash
 
-# This is Krushn's Arch Linux Installation Script.
-# Visit krushndayshmookh.github.io/krushn-arch for instructions.
+# This is my Arch Linux Installation Script.
+# Forked from krushndayshmookh.github.io/krushn-arch.
 
-echo "Krushn's Arch Installer"
+echo "
+
+    __          ___ _                 _            
+    \ \        / (_) |               ( )           
+     \ \  /\  / / _| |___  ___  _ __ |/ ___        
+      \ \/  \/ / | | / __|/ _ \| '_ \  / __|       
+       \  /\  /  | | \__ \ (_) | | | | \__ \       
+        \/  \/   |_|_|___/\___/|_| |_| |___/       
+                                                   
+                                                   
+                _                            _     
+     /\        | |            /\            | |    
+    /  \  _   _| |_ ___      /  \   _ __ ___| |__  
+   / /\ \| | | | __/ _ \    / /\ \ | '__/ __| '_ \ 
+  / ____ \ |_| | || (_) |  / ____ \| | | (__| | | |
+ /_/    \_\__,_|\__\___/  /_/    \_\_|  \___|_| |_|
+                                                   
+                                                   
+     _____           _        _ _                  
+    |_   _|         | |      | | |                 
+      | |  _ __  ___| |_ __ _| | | ___ _ __        
+      | | | '_ \/ __| __/ _` | | |/ _ \ '__|       
+     _| |_| | | \__ \ || (_| | | |  __/ |          
+    |_____|_| |_|___/\__\__,_|_|_|\___|_|          
+                                                   
+                                                   
+
+"
 
 # Set up network connection
 read -p 'Are you connected to internet? [y/N]: ' neton
@@ -16,8 +43,7 @@ fi
 # Filesystem mount warning
 echo "This script will create and format the partitions as follows:"
 echo "/dev/sda1 - 512Mib will be mounted as /boot/efi"
-echo "/dev/sda2 - 8GiB will be used as swap"
-echo "/dev/sda3 - rest of space will be mounted as /"
+echo "/dev/sda2 - rest of space will be mounted as /"
 read -p 'Continue? [y/N]: ' fsok
 if ! [ $fsok = 'y' ] && ! [ $fsok = 'Y' ]
 then 
@@ -34,25 +60,26 @@ sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk ${TGTDEV}
   1 # partition number 1
     # default - start at beginning of disk 
   +512M # 512 MB boot parttion
+  t # type of partition
+    # default - start at beginning of disk
+  1 # efi flag
   n # new partition
   p # primary partition
   2 # partion number 2
     # default, start immediately after preceding partition
-  +8G # 8 GB swap parttion
-  n # new partition
-  p # primary partition
-  3 # partion number 3
-    # default, start immediately after preceding partition
     # default, extend partition to end of disk
   a # make a partition bootable
   1 # bootable partition is partition 1 -- /dev/sda1
+  t # type of partition
+  2 # do this to the main partition
+  24 # Linux filesystem flag
   p # print the in-memory partition table
   w # write the partition table
   q # and we're done
 EOF
 
 # Format the partitions
-mkfs.ext4 /dev/sda3
+mkfs.ext4 /dev/sda2
 mkfs.fat -F32 /dev/sda1
 
 # Set up time
@@ -64,16 +91,14 @@ pacman-key --populate archlinux
 pacman-key --refresh-keys
 
 # Mount the partitions
-mount /dev/sda3 /mnt
+mount /dev/sda2 /mnt
 mkdir -pv /mnt/boot/efi
 mount /dev/sda1 /mnt/boot/efi
-mkswap /dev/sda2
-swapon /dev/sda2
 
 # Install Arch Linux
 echo "Starting install.."
-echo "Installing Arch Linux, KDE with Konsole and Dolphin and GRUB2 as bootloader" 
-pacstrap /mnt base base-devel zsh grml-zsh-config grub os-prober intel-ucode efibootmgr dosfstools freetype2 fuse2 mtools iw wpa_supplicant dialog xorg xorg-server xorg-xinit mesa xf86-video-intel plasma konsole dolphin
+echo "Installing Arch Linux, OpenBox with Gnome Terminal and Thunar and GRUB2 as bootloader" 
+pacstrap /mnt base base-devel zsh grml-zsh-config grub os-prober intel-ucode efibootmgr dosfstools freetype2 fuse2 mtools iw wpa_supplicant dialog xorg xorg-server xorg-xinit mesa xf86-video-intel openbox gnome-terminal firefox thunar
 
 # Generate fstab
 genfstab -U /mnt >> /mnt/etc/fstab
