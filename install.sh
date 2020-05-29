@@ -72,7 +72,7 @@ reflector -l 200 -f 10 --sort score > /etc/pacman.d/mirrorlist
 # Install Arch Linux
 echo "Starting install.."
 echo "Installing Arch Linux, OpenBox with Gnome Terminal and Thunar and GRUB2 as bootloader" 
-pacstrap /mnt base base-devel sudo git zsh grml-zsh-config grub os-prober intel-ucode efibootmgr dosfstools freetype2 fuse2 mtools iw wpa_supplicant dialog pulseaudio xorg xorg-xrandr xorg-server xorg-xinit mesa xf86-video-intel openbox gnome-terminal firefox thunar neofetch sl figlet cowsay nitrogen tint2 lightdm lxappearance
+pacstrap /mnt base base-devel sudo git exa zsh grml-zsh-config grub os-prober intel-ucode efibootmgr dosfstools freetype2 fuse2 mtools iw wpa_supplicant dialog pulseaudio xorg xorg-xrandr xorg-server xorg-xinit mesa xf86-video-intel openbox gnome-terminal firefox thunar neofetch sl figlet cowsay nitrogen tint2 lightdm lxappearance
 
 # Generate fstab
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -85,11 +85,7 @@ chmod a+x /mnt/root/post-install.sh
 echo "After chrooting into newly installed OS, please run the post-install.sh by executing ./post-install.sh"
 echo "Press any key to chroot..."
 read tmpvar
-arch-chroot /mnt /bin/bash
+arch-chroot /mnt /bin/zsh
 
 # Finish
-echo "If post-install.sh was run succesfully, you will now have a fully working bootable Arch Linux system installed."
-echo "The only thing left is to reboot into the new system."
-echo "Press any key to reboot or Ctrl+C to cancel..."
-read tmpvar
-reboot
+echo "This installation script is now finished! You now need to run post-install.sh, if that script is run successfully you will now have a fully working bootable Arch Linux system installed."
