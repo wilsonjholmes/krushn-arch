@@ -60,14 +60,17 @@ echo
 # Set up time
 timedatectl set-ntp true
 
-echo
-echo "Initiate pacman keyrings"
-echo
-
-# Initate pacman keyring
-pacman-key --init
-pacman-key --populate archlinux
-pacman-key --refresh-keys
+################################
+# echo
+# echo "Initiate pacman keyrings"
+# echo
+#
+# # Initate pacman keyring
+# pacman-key --init
+# pacman-key --populate archlinux
+# pacman-key --refresh-keys
+################################
+# ^^^ commented all this out as it somehow deleted my mirrorlist maybe?
 
 echo
 echo "Mount the partitions"
@@ -79,7 +82,7 @@ mkdir -pv /mnt/boot/efi
 mount ${TGTDEV}1 /mnt/boot/efi
 
 echo
-echo "Installing reflector for sorting mirrors. Will keep a backup of the old one."
+echo "Installing and running reflector for sorting the mirrorslist. Will keep a backup of the old one incase you-know-what hits the fan."
 echo
 
 # Install reflector for sorting mirrors
