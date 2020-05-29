@@ -1,10 +1,11 @@
 #! /bin/bash
 set -e # Stop script on error
-TGTDEV=/dev/sda
+# 'TGTDEV=/dev/sda bash install.sh' <--(example use of this script)
 
 # This is my Arch Linux Installation Script.
 # Forked from krushndayshmookh.github.io/krushn-arch.
 
+echo
 echo "Wilson's Auto-Arch Installation Script!"
 echo
 echo "Set up network connection, This script will fail otherwise."
@@ -49,8 +50,8 @@ sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk ${TGTDEV}
 EOF
 
 # Format the partitions
-mkfs.ext4 /dev/sda2
-mkfs.fat -F32 /dev/sda1
+mkfs.ext4 ${TGTDEV}2
+mkfs.fat -F32 ${TGTDEV}1
 
 echo
 echo "Now the time will be synced"
@@ -73,9 +74,9 @@ echo "Mount the partitions"
 echo
 
 # Mount the partitions
-mount /dev/sda2 /mnt
+mount ${TGTDEV}2 /mnt
 mkdir -pv /mnt/boot/efi
-mount /dev/sda1 /mnt/boot/efi
+mount ${TGTDEV}1 /mnt/boot/efi
 
 echo
 echo "Installing reflector for sorting mirrors. Will keep a backup of the old one."
