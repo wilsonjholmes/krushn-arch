@@ -1,9 +1,10 @@
 #! /bin/bash
 
-# This is Configuration script of Krushn's Arch Linux Installation Package.
-# Visit krushndayshmookh.github.io/krushn-arch for instructions.
+# This is configuration script of my Arch Linux installation package.
+# Origiinally forked from krushndayshmookh.github.io/krushn-arch.
 
-echo "Krushn's Arch Configurator"
+
+echo "Auto Archer"
 
 # Set date time
 ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
