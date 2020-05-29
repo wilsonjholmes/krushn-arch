@@ -104,7 +104,7 @@ echo "About to install Arch Linux, OpenBox with Gnome Terminal, Thunar, and GRUB
 echo "Press any key to continue or Ctrl+C to cancel... (Note: If you cancel while packages are downloading you should be able to restart this scrip without issue, but if pacstrap is cancelled during installation, bad things might happen and you may need to reformat and start over from the beginning of this scrpit)"
 read tmpvar
 echo
-pacstrap /mnt base base-devel sudo linux linux-firmware git nano neovim exa zsh grml-zsh-config grub os-prober intel-ucode efibootmgr lightdm-gtk-greeter lightdm-gtk-greeter-settings dosfstools network-manager-applet freetype2 fuse2 networkmanager mtools iw wpa_supplicant dialog pulseaudio xorg xorg-xrandr xorg-server xorg-xinit mesa xf86-video-intel openbox gnome-terminal firefox thunar neofetch sl figlet cowsay nitrogen tint2 lightdm lxappearance
+pacstrap /mnt base base-devel sudo linux linux-firmware git nano neovim exa zsh grml-zsh-config grub tigervnc opensshos-prober intel-ucode efibootmgr lightdm-unity-greeter dosfstools network-manager-applet freetype2 fuse2 networkmanager mtools iw wpa_supplicant dialog pulseaudio xorg xorg-xrandr xorg-server xorg-xinit mesa xf86-video-intel openbox gnome-terminal firefox thunar neofetch sl figlet cowsay nitrogen tint2 lightdm lxappearance
 
 echo
 echo "Generating the fstab file, this determines what drives are mounted at boot"
