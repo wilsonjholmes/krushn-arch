@@ -28,8 +28,9 @@ echo "127.0.1.1 MCRN-Donnager.localdomain  MCRN-Donnager" >> /etc/hosts
 passwd
 
 # Install bootloader
-grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=arch
+mkdir /boot/grub/
 grub-mkconfig -o /boot/grub/grub.cfg
+grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=arch
 
 # Create new user (Group iput did not exist)
 useradd -m -G wheel,power,storage,uucp,network -s /usr/bin/zsh wilson
@@ -37,11 +38,11 @@ sed --in-place 's/^#\s*\(%wheel\s\+ALL=(ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sud
 echo "Set password for new user wilson"
 passwd wilson
 
-# Setup display manager
-systemctl enable lightdm.service
+# Setup display manager (don't think I need the '.service' part)
+systemctl enable lightdm
 
 # Enable services
-systemctl enable NetworkManager.service
+systemctl enable NetworkManager
 
 echo "Configuration done! Press any key to exit chroot."
 read tmpvar
