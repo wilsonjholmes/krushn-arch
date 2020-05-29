@@ -4,7 +4,6 @@ set -e # Stop script on error
 # This is configuration script of my Arch Linux installation package.
 # Origiinally forked from krushndayshmookh.github.io/krushn-arch.
 
-
 echo "Auto-Arch Post Install"
 
 # Set date time
@@ -47,23 +46,5 @@ systemctl enable NetworkManager
 
 # Install yay for AUR packages
 su wilson
-cd /tmp
-git clone https://aur.archlinux.org/yay.git
-cd yay
-makepkg -si
 
-
-echo "Configuration done! Press any key to exit chroot."
-read tmpvar
-exit
-exit
-
-# unmount partitions tp prep for reboot
-umount -R /mnt
-
-# Finish
-echo "This post-install script is now finished! Arch Linux is installed!"
-echo "The only thing left is to reboot into the new system."
-echo "Press any key to reboot or Ctrl+C to cancel..."
-read tmpvar
-reboot
+echo "From here you will have to go and run the final script"
