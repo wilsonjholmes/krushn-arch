@@ -21,8 +21,8 @@ echo "127.0.0.1 localhost" >> /etc/hosts
 echo "::1 localhost" >> /etc/hosts
 echo "127.0.1.1 MCRN-Donnager.localdomain  MCRN-Donnager" >> /etc/hosts
 
-# Generate initramfs
-mkinitcpio -P
+## Generate initramfs (Not working currently, not sure why)
+#mkinitcpio -P
 
 # Set root password
 passwd
@@ -31,8 +31,8 @@ passwd
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=arch
 grub-mkconfig -o /boot/grub/grub.cfg
 
-# Create new user
-useradd -m -G wheel,power,iput,storage,uucp,network -s /usr/bin/zsh wilson
+# Create new user (Group iput did not exist)
+useradd -m -G wheel,power,storage,uucp,network -s /usr/bin/zsh wilson
 sed --in-place 's/^#\s*\(%wheel\s\+ALL=(ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sudoers
 echo "Set password for new user wilson"
 passwd wilson
@@ -40,7 +40,16 @@ passwd wilson
 # Setup display manager
 systemctl enable lightdm.service
 
-# Enable services
-systemctl enable NetworkManager.service
+## Enable services (didn't work, dont know why yet. Think it has to do with network manager not being installed)
+#systemctl enable NetworkManager.service
 
-echo "Configuration done. You can now exit chroot."
+echo "Configuration done! Press any key to exit chroot."
+read tmpvar
+exit
+
+# Finish
+echo "This post-install script is now finished! Arch Linux is installed!"
+echo "The only thing left is to reboot into the new system."
+echo "Press any key to reboot or Ctrl+C to cancel..."
+read tmpvar
+reboot
