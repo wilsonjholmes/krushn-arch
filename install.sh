@@ -3,37 +3,13 @@
 # This is my Arch Linux Installation Script.
 # Forked from krushndayshmookh.github.io/krushn-arch.
 
-echo "
+echo "Wilson's Auto-Arch Installation Script!"
 
-    __          ___ _                 _            
-    \ \        / (_) |               ( )           
-     \ \  /\  / / _| |___  ___  _ __ |/ ___        
-      \ \/  \/ / | | / __|/ _ \| '_ \  / __|       
-       \  /\  /  | | \__ \ (_) | | | | \__ \       
-        \/  \/   |_|_|___/\___/|_| |_| |___/       
-                                                   
-                                                   
-                _                            _     
-     /\        | |            /\            | |    
-    /  \  _   _| |_ ___      /  \   _ __ ___| |__  
-   / /\ \| | | | __/ _ \    / /\ \ | '__/ __| '_ \ 
-  / ____ \ |_| | || (_) |  / ____ \| | | (__| | | |
- /_/    \_\__,_|\__\___/  /_/    \_\_|  \___|_| |_|
- 
- 
-"
-
-# Set up network connection
-read -p 'Are you connected to internet? [y/N]: ' neton
-if ! [ $neton = 'y' ] && ! [ $neton = 'Y' ]
-then 
-    echo "Connect to internet to continue..."
-    exit
-fi
+echo "Set up network connection, This script will fail otherwise."
 
 # Filesystem mount warning
 echo "This script will create and format the partitions as follows:"
-echo "/dev/sda1 - 512Mib will be mounted as /boot/efi"
+echo "/dev/sda1 - 512Mb will be mounted as /boot/efi"
 echo "/dev/sda2 - rest of space will be mounted as /"
 read -p 'Continue? [y/N]: ' fsok
 if ! [ $fsok = 'y' ] && ! [ $fsok = 'Y' ]
@@ -43,30 +19,28 @@ then
 fi
 
 # to create the partitions programatically (rather than manually)
-# https://superuser.com/a/984637
+# we're going to simulate the manual input to fdisk
+# The sed script strips off all the comments so that we can 
+# document what we're doing in-line with the actual commands
+# Note that a blank line (commented as "defualt" will send a empty
+# line terminated with a newline to take the fdisk default.
 sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk ${TGTDEV}
-  o # clear the in memory partition table
+  g # clear the in memory partition table, and make a new gpt one
   n # new partition
-  p # primary partition
   1 # partition number 1
     # default - start at beginning of disk 
-  +512M # 512 MB boot parttion
+  +512M # 512MB boot parttion
   t # type of partition
-    # default - start at beginning of disk
-  1 # efi flag
+  1 # partition type 1 'efi'
   n # new partition
-  p # primary partition
   2 # partion number 2
     # default, start immediately after preceding partition
     # default, extend partition to end of disk
-  a # make a partition bootable
-  1 # bootable partition is partition 1 -- /dev/sda1
   t # type of partition
-  2 # do this to the main partition
-  24 # Linux filesystem flag
+  2 # partition number 2
+  24 # partition type 24 'Linux root (x86-64)'
   p # print the in-memory partition table
   w # write the partition table
-  q # and we're done
 EOF
 
 # Format the partitions
@@ -85,6 +59,8 @@ pacman-key --refresh-keys
 mount /dev/sda2 /mnt
 mkdir -pv /mnt/boot/efi
 mount /dev/sda1 /mnt/boot/efi
+
+# Get the fastest in-sync (up-to-date) mirrors and store them in mirrorlist
 
 # Install Arch Linux
 echo "Starting install.."
