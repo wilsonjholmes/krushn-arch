@@ -1,4 +1,6 @@
 #! /bin/bash
+set -e # Stop script on error
+TGTDEV=/dev/sda
 
 # This is my Arch Linux Installation Script.
 # Forked from krushndayshmookh.github.io/krushn-arch.
@@ -72,7 +74,7 @@ reflector -l 200 -f 10 --sort score > /etc/pacman.d/mirrorlist
 # Install Arch Linux
 echo "Starting install.."
 echo "Installing Arch Linux, OpenBox with Gnome Terminal and Thunar and GRUB2 as bootloader" 
-pacstrap /mnt base base-devel sudo git nano neovim exa zsh grml-zsh-config grub os-prober intel-ucode efibootmgr dosfstools freetype2 fuse2 networkmanager mtools iw wpa_supplicant dialog pulseaudio xorg xorg-xrandr xorg-server xorg-xinit mesa xf86-video-intel openbox gnome-terminal firefox thunar neofetch sl figlet cowsay nitrogen tint2 lightdm lxappearance
+pacstrap /mnt base base-devel sudo git nano neovim exa zsh grml-zsh-config grub os-prober intel-ucode efibootmgr dosfstools network-manager-applet freetype2 fuse2 networkmanager mtools iw wpa_supplicant dialog pulseaudio xorg xorg-xrandr xorg-server xorg-xinit mesa xf86-video-intel openbox gnome-terminal firefox thunar neofetch sl figlet cowsay nitrogen tint2 lightdm lxappearance
 
 # Generate fstab
 genfstab -U /mnt >> /mnt/etc/fstab
