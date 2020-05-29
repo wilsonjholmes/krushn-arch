@@ -60,12 +60,19 @@ mount /dev/sda2 /mnt
 mkdir -pv /mnt/boot/efi
 mount /dev/sda1 /mnt/boot/efi
 
-# Get the fastest in-sync (up-to-date) mirrors and store them in mirrorlist
+# Install reflector for sorting mirrors
+pacman -Sy reflector
+
+# Store a backup of the mirrors that came with the installation
+mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
+
+# Get the fastest in-sync (up-to-date) mirrors and store 10 of them (sorted) in mirrorlist
+reflector -l 200 -f 10 --sort score > /etc/pacman.d/mirrorlist
 
 # Install Arch Linux
 echo "Starting install.."
 echo "Installing Arch Linux, OpenBox with Gnome Terminal and Thunar and GRUB2 as bootloader" 
-pacstrap /mnt base base-devel zsh grml-zsh-config grub os-prober intel-ucode efibootmgr dosfstools freetype2 fuse2 mtools iw wpa_supplicant dialog xorg xorg-server xorg-xinit mesa xf86-video-intel openbox gnome-terminal firefox thunar
+pacstrap /mnt base base-devel sudo git zsh grml-zsh-config grub os-prober intel-ucode efibootmgr dosfstools freetype2 fuse2 mtools iw wpa_supplicant dialog pulseaudio xorg xorg-xrandr xorg-server xorg-xinit mesa xf86-video-intel openbox gnome-terminal firefox thunar neofetch sl figlet cowsay nitrogen tint2 lightdm lxappearance
 
 # Generate fstab
 genfstab -U /mnt >> /mnt/etc/fstab
