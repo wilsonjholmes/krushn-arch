@@ -117,9 +117,12 @@ echo
 echo "Copying the post-install system configuration script to new /root in preperation for arch-chroot"
 echo
 
-# Copy post-install system configuration script to new /root
-cp -rfv post-install.sh /mnt/root
-chmod a+x /mnt/root/post-install.sh
+# Copy post-install system configuration scripts to new / (or currently /mnt for us before chroot)
+cp -rfv post-install.sh /mnt/
+chmod a+x /mnt/post-install.sh
+cp -rfv post-post-install.sh /mnt/
+chmod a+x /mnt/post-post-install.sh
+
 
 echo
 echo "You are now ready to change your root directory from your installation media to the drive that you are installing to!"
