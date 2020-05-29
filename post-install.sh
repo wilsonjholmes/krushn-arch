@@ -7,7 +7,7 @@ set -e # Stop script on error
 echo "Auto-Arch Post Install"
 
 # Set date time
-ln -sf /usr/share/zoneinfo/US/Michigan /etc/localtime
+ln -sf /usr/share/zoneinfo/America/Detroit /etc/localtime
 hwclock --systohc
 
 # Set locale to en_US.UTF-8 UTF-8
