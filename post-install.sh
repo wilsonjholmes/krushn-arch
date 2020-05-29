@@ -40,8 +40,8 @@ passwd wilson
 # Setup display manager
 systemctl enable lightdm.service
 
-## Enable services (didn't work, dont know why yet. Think it has to do with network manager not being installed)
-#systemctl enable NetworkManager.service
+# Enable services
+systemctl enable NetworkManager.service
 
 echo "Configuration done! Press any key to exit chroot."
 read tmpvar
