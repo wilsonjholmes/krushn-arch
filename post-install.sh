@@ -30,7 +30,7 @@ passwd
 # Install bootloader
 mkdir /boot/grub/
 grub-mkconfig -o /boot/grub/grub.cfg
-grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=arch
+grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=arch_grub --recheck
 
 # Create new user (Group iput did not exist)
 useradd -m -G wheel,power,storage,uucp,network -s /bin/zsh wilson
