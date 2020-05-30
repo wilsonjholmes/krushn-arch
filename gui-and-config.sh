@@ -5,7 +5,7 @@ HOSTNAME=$1
 echo ${HOSTNAME}
 
 # # Install other tools
-# pacman -S zsh exa dosfstools neofetch sl figlet cowsay ranger htop pulseaudio xorg xorg-xinit xorg-xrandr openbox gnome-terminal firefox thunar nitrogen tint2 lxappearance
+# pacman -S zsh exa dosfstools neofetch sl figlet cowsay ranger htop pulseaudio tigervnc xorg xorg-xinit xorg-xrandr openbox gnome-terminal firefox thunar nitrogen tint2 lxappearance
 
 # # change user to 
 # su ${HOSTNAME}

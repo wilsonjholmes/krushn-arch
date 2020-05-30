@@ -61,7 +61,7 @@ mkdir /mnt/home
 mount ${TGTDEV}3 /mnt/home
 
 # Install reflector for sorting mirrors
-pacman -Sy reflector
+pacman -Sy reflector --noconfirm
 
 # Store a backup of the mirrors that came with the installation
 mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
@@ -73,7 +73,7 @@ reflector -l 200 -f 10 --sort score > /etc/pacman.d/mirrorlist
 read -p "Are you installing on a computer with an AMD[1] or Intel[2] cpu: " CPU
 
 # Minimal install with pacstrap (graphical setup will be done in another script)
-pacstrap /mnt base base-devel linux linux-firmware intel-ucode efibootmgr grub nano neovim git tigervnc openssh networkmanager
+pacstrap /mnt base base-devel linux linux-firmware intel-ucode efibootmgr grub nano neovim git openssh networkmanager
 
 # Generate fstab
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -83,4 +83,4 @@ cp -rfv *.sh /mnt/
 chmod a+x *.sh
 
 # chroot into installation
-arch-chroot /mnt /post-chroot.sh
+arch-chroot /mnt bash ./post-chroot.sh
