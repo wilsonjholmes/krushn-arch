@@ -33,18 +33,17 @@ grub-mkconfig -o /boot/grub/grub.cfg
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=arch_grub --recheck
 
 # Create new user (Group iput did not exist)
-useradd -m -G wheel,power,storage,uucp,network -s /bin/zsh wilson
+useradd -aG wheel,power,storage,audio,video,optical,uucp,network -s /bin/zsh wilson
 sed --in-place 's/^#\s*\(%wheel\s\+ALL=(ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sudoers
+# add 'Defaults !tty_tickets' to not have to retype in your sudo password all of the times
 echo "Set password for new user wilson"
 passwd wilson
 
-# Setup display manager
-systemctl enable lightdm.service
-
-# Enable other various services
+# enable display manager and other various services
+# systemctl enable lightdm.service
 systemctl enable NetworkManager
-systemctl start sshd.service
 systemctl enable sshd.service
+systemctl enable dhcpcd
 
 # Install yay for AUR packages
 su wilson
