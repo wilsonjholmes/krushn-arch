@@ -35,7 +35,7 @@ grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=arch_
 
 # Create new sudo user
 read -p "Enter username: " USERNAME
-useradd -m -G wheel -s ${USERNAME}
+useradd -m -G wheel -s /bin/bash ${USERNAME}
 passwd ${USERNAME}
 sed --in-place 's/^#\s*\(%wheel\s\+ALL=(ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sudoers
 
@@ -47,4 +47,4 @@ systemctl enable NetworkManager
 systemctl enable sshd.service
 
 # Run the next script
-bash ./gui-and-config.sh HOSTNAME
+bash ./gui-and-config.sh ${HOSTNAME}
