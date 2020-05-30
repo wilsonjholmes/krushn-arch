@@ -54,7 +54,8 @@ pacman-key --populate archlinux
 pacman-key --refresh-keys
 
 # Mount the partitions
-mkdir -pv /mnt/boot/efi
+mkdir /mnt/boot
+mkdir /mnt/boot/efi
 mount ${TGTDEV}1 /mnt/boot/efi
 mount ${TGTDEV}2 /mnt
 mkdir /mnt/home
