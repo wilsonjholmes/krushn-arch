@@ -13,6 +13,13 @@ echo "Press any key to continue or Ctrl+C to cancel..."
 read tmpvar
 echo
 
+# Set up time
+timedatectl set-ntp true
+
+echo
+echo "Now the time will be synced"
+echo
+
 # Filesystem mount warning
 echo "This script will create and format the partitions as follows:"
 echo "${TGTDEV}1 - 512Mb will be mounted as /boot/efi"
@@ -32,10 +39,6 @@ fi
 # line terminated with a newline to take the fdisk default.
 sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk ${TGTDEV}
   g # clear the in memory partition table, and make a new gpt one
-  w # write the partition table
-EOF
-
-sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk ${TGTDEV}
   n # new partition
   1 # partition number 1
     # default - start at beginning of disk 
@@ -43,26 +46,27 @@ sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk ${TGTDEV}
   t # type of partition
   1 # partition type 1 'efi'
   n # new partition
-  2 # partion number 2
+  2 # partition number 2
     # default, start immediately after preceding partition
-    # default, extend partition to end of disk
+  +32G # 32Gib root partition
   t # type of partition
   2 # partition number 2
   24 # partition type 24 'Linux root (x86-64)'
+  n # new partition
+  3 # partition number 3
+    # default, start immediately after preceding partition
+    # default, Go to the end of the disk
+  t # type of partition
+  3 # partition number 3
+  28 # partition type 28 'Linux Home'
   p # print the in-memory partition table
   w # write the partition table
 EOF
 
 # Format the partitions
-mkfs.ext4 ${TGTDEV}2
 mkfs.fat -F32 ${TGTDEV}1
-
-echo
-echo "Now the time will be synced"
-echo
-
-# Set up time
-timedatectl set-ntp true
+mkfs.ext4 ${TGTDEV}2
+mkfs.ext4 ${TGTDEV}3
 
 ################################
 # echo
@@ -75,6 +79,7 @@ timedatectl set-ntp true
 # pacman-key --refresh-keys
 ################################
 # ^^^ commented all this out as it somehow deleted my mirrorlist maybe?
+# luke smith also doesnt do this
 
 echo
 echo "Mount the partitions"
@@ -105,8 +110,11 @@ echo "Press any key to continue or Ctrl+C to cancel... (Note: If you cancel whil
 read tmpvar
 echo
 
+# minimal pacstrap option
+# pacstrap /mnt base base-devel linux linux-firmware intel-ucode nano
+
 # lightdm lightdm-pantheon-greeter
-pacstrap /mnt base base-devel linux linux-firmware nano zsh grub intel-ucode efibootmgr os-prober xorg-server xorg-xinit mesa xf86-video-intel neovim exa tigervnc openssh dosfstools network-manager-applet freetype2 fuse2 networkmanager mtools iw wpa_supplicant dialog pulseaudio xorg-xrandr openbox gnome-terminal firefox thunar neofetch sl figlet cowsay nitrogen tint2 lxappearance
+pacstrap /mnt base base-devel linux linux-firmware nano zsh grub intel-ucode efibootmgr os-prober xorg-server xorg-xinit mesa xf86-video-intel git neovim exa tigervnc openssh dosfstools network-manager-applet freetype2 fuse2 networkmanager mtools iw wpa_supplicant dialog pulseaudio xorg-xrandr openbox gnome-terminal firefox thunar neofetch sl figlet cowsay nitrogen tint2 lxappearance
 
 echo
 echo "Generating the fstab file, this determines what drives are mounted at boot"

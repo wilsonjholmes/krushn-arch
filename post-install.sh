@@ -6,6 +6,9 @@ set -e # Stop script on error
 
 echo "Auto-Arch Post Install"
 
+# pacman -S networkmanager grub efibootmgr
+
+
 # Set date time
 ln -sf /usr/share/zoneinfo/America/Detroit /etc/localtime
 hwclock --systohc
@@ -33,7 +36,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=arch_grub --recheck
 
 # Create new user (Group iput did not exist)
-useradd -aG wheel,power,storage,audio,video,optical,uucp,network -s /bin/zsh wilson
+useradd -G wheel,power,storage,audio,video,optical,uucp,network -s /bin/zsh wilson
 sed --in-place 's/^#\s*\(%wheel\s\+ALL=(ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sudoers
 # add 'Defaults !tty_tickets' to not have to retype in your sudo password all of the times
 echo "Set password for new user wilson"
