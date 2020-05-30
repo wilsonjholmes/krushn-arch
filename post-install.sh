@@ -38,11 +38,13 @@ sed --in-place 's/^#\s*\(%wheel\s\+ALL=(ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sud
 echo "Set password for new user wilson"
 passwd wilson
 
-# Setup display manager (don't think I need the '.service' part)
-systemctl enable lightdm
+# Setup display manager
+systemctl enable lightdm.service
 
-# Enable services
+# Enable other various services
 systemctl enable NetworkManager
+systemctl start sshd.service
+systemctl enable sshd.service
 
 # Install yay for AUR packages
 su wilson
