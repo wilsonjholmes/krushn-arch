@@ -1,4 +1,5 @@
 #! /bin/bash
+set -e # Stop script on error
 
 HOSTNAME=$1
 

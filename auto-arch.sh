@@ -1,4 +1,5 @@
 #! /bin/bash
+set -e # Stop script on error
 
 # Set up time
 timedatectl set-ntp true
@@ -83,8 +84,6 @@ genfstab -U /mnt >> /mnt/etc/fstab
 cp -rfv *.sh /mnt/
 chmod a+x *.sh
 
-# chroot into installation
-# arch-chroot /mnt bash ./post-chroot.sh
-arch-chroot /mnt /bin/bash <<EOF
-  bash ./post-chroot.sh
-EOF
+# chroot thingy
+bash ./post-chroot.sh
+
