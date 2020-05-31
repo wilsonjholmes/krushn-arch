@@ -35,18 +35,18 @@ mkdir /boot/grub/
 grub-mkconfig -o /boot/grub/grub.cfg
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=arch_grub --recheck
 
-# # Create new sudo user
-# read -p "Enter username: " USERNAME
-# useradd -m -G wheel -s /bin/bash ${USERNAME}
-# passwd ${USERNAME}
-# sed --in-place 's/^#\s*\(%wheel\s\+ALL=(ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sudoers
+# Create new sudo user
+read -p "Enter username: " USERNAME
+useradd -m -G wheel -s /bin/bash ${USERNAME}
+passwd ${USERNAME}
+sed --in-place 's/^#\s*\(%wheel\s\+ALL=(ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sudoers
 
-# # add 'Defaults !tty_tickets' to not have to retype in your sudo password all of the times
-# # also add Luke Smith thing so I can reboot without sudo
+# add 'Defaults !tty_tickets' to not have to retype in your sudo password all of the times
+# also add Luke Smith thing so I can reboot without sudo
 
-# # enable essential services
-# systemctl enable NetworkManager
-# systemctl enable sshd.service
+# enable essential services
+systemctl enable NetworkManager
+systemctl enable sshd.service
 
-# # Run the next script
-# bash ./gui-and-config.sh ${HOSTNAME}
+# Run the next script
+bash ./gui-and-config.sh ${HOSTNAME}
