@@ -8,7 +8,7 @@ hwclock --systohc
 
 # Set locale to en_US.UTF-8 UTF-8
 sed -i '/en_US.UTF-8 UTF-8/s/^#//g' /etc/locale.gen
-sed -i '/en_US ISO-8859-1/s/^#//g' /etc/locale.gen
+# sed -i '/en_US ISO-8859-1/s/^#//g' /etc/locale.gen
 locale-gen
 echo "LANG=en_US.UTF-8" >> /etc/locale.conf
 
