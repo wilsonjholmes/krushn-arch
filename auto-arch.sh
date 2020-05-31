@@ -75,7 +75,7 @@ reflector -l 200 -f 10 --sort score > /etc/pacman.d/mirrorlist
 read -p "Are you installing on a computer with an AMD[1] or Intel[2] cpu: " CPU
 
 # Minimal install with pacstrap (graphical setup will be done in another script)
-pacstrap /mnt base base-devel linux linux-firmware intel-ucode efibootmgr grub nano neovim git openssh networkmanager
+pacstrap /mnt base base-devel linux linux-firmware intel-ucode efibootmgr nano neovim git openssh networkmanager
 
 # Generate fstab
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -84,6 +84,8 @@ genfstab -U /mnt >> /mnt/etc/fstab
 cp -rfv *.sh /mnt/
 chmod a+x *.sh
 
-# chroot thingy
-bash ./post-chroot.sh
-
+# chroot into installation
+arch-chroot /mnt bash ./post-chroot.sh
+# arch-chroot /mnt /bin/bash <<EOF
+#   bash ./post-chroot.sh
+# EOF
